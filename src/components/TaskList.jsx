@@ -1,22 +1,19 @@
-import React from 'react'
-
+import React, {Component} from 'react';
 import Task from './Task'
 
-class TaskList extends React.Component
-{
-  render()
-  {
+export default class TaskList extends Component {
+  render() {
+    const {tasks, onRemove,  handleDone} = this.props
     return (
-      <React.Fragment>
-        <ul className="todo-list">
-          { this.props.Todos.map((todo) => (
-            <Task todo={ todo } key={ todo.id } />
-          ))}
+      <ul className="todo-list">
+          {tasks.map(({task, id, isDone}) => 
+            <Task value={task} key={id} 
+              onRemove={() => onRemove(id)} 
+              handleDone={() => handleDone(id)}
+              isDone={isDone}
+              />
+            )}        
         </ul>
-      </React.Fragment>
     )
   }
 }
-
-
-export default TaskList

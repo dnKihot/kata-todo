@@ -1,20 +1,14 @@
-import React from 'react'
+import React, {Component} from 'react';
+import TaskFilter from './TaskFilter'
 
-import TasksFilter from './TasksFilter'
-
-class Footer extends React.Component
-{
-  render()
-  {
+export default class Footer extends Component {
+  render() {
     return (
-      <React.Fragment>
-         <footer className="footer">
-          <TasksFilter />
+      <footer className="footer">
+          <span className="todo-count">1 items left</span>
+          <TaskFilter />
+          <button className="clear-completed">Clear completed</button>
         </footer>
-      </React.Fragment>
     )
   }
 }
-
-
-export default Footer

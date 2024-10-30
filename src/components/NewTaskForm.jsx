@@ -1,40 +1,19 @@
-import React from 'react'
+import React, {Component} from 'react';
 
-class NewTaskForm extends React.Component
-{
-
-  state = {
-      title: '',
-      completed: false,
-      editing: false
-  }
-
-  add(e)
-  {
-    this.setState({ title: e.target.value })
-
-    if(e.key == 'Enter')
-      this.props.add({ id: Date.now(), ...this.state })
-  }
-
-
-  render()
-  {
+export default class NewTaskForm extends Component {
+  render() {
+    const {task, onChange, onKeyDown} = this.props
     return (
-      <React.Fragment>
-         <header className="header">
-            <h1 onClick={ () => this.props.add() }>todos</h1>
-            <input className="new-todo" 
-                   placeholder="What needs to be done?" 
-                   onKeyUp={ (e) => this.add(e) } 
-                   
-                   autofocus        
-            />
-          </header>
-      </React.Fragment>
+      <header className="header">
+        <h1>todos</h1>
+        <input className="new-todo" 
+        placeholder="What needs to be done?" 
+        autoFocus 
+        value={task}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        />
+      </header>
     )
   }
 }
-
-
-export default NewTaskForm

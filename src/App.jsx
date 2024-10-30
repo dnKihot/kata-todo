@@ -1,41 +1,49 @@
-import React from 'react'
+import React, {Component} from 'react'
+import uniqueId from 'lodash/uniqueId'
 
-import NewTaskForm from './components/NewTaskForm'
-import TaskList from './components/TaskList'
 import Footer from './components/Footer'
+import TaskList from './components/TaskList'
+import NewTaskForm from './components/NewTaskForm'
 
-class App extends React.Component
-{
-
-  state = {
-    Todos: []
+export default class App extends Component {
+  state = {task: '', tasks: []}
+  
+  handleChange = (e) => {
+    this.setState({ task: e.target.value });
+  };
+  handleSubmit = () => {
+    const {task,  tasks} = this.state
+    const id = uniqueId()
+    if (task.trim()) this.setState({task: '' , tasks: [{task, id, isDone: false}, ...tasks]})
   }
-
-  add(todo)
-  {
-    this.setState({ Todos: [ ...this.state.Todos, todo ]})
+  hadnleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      this.handleSubmit()
+    }
   }
-
-
-
-  render()
-  {
+  handleRemove = (id) => {
+    const {tasks} = this.state
+    this.setState({tasks: tasks.filter(task => task.id !== id)})
+  }
+  handleDone = (id) => {
+    this.setState(prevState => ({
+      tasks: prevState.tasks.map(task => 
+        task.id === id ? { ...task, isDone: !task.isDone } : task
+      )
+    }));
+  };
+  
+  
+  render() {
+    const {task, tasks, isDone} = this.state
     return (
-      <React.Fragment>
-        <section className="todoapp">
-          <NewTaskForm add={ this.add.bind(this) }/>
-
-          <section className="main">
-            <TaskList Todos={ this.state.Todos }/>
-
-          </section>
-
+      <section className="todoapp">
+        <NewTaskForm task={task} onChange={this.handleChange} onKeyDown={this.hadnleKeyDown} />
+        <section className="main">
+          <TaskList tasks={tasks} onRemove={this.handleRemove} handleDone={this.handleDone}/>
           <Footer />
         </section>
-      </React.Fragment>
+      </section>
     )
   }
 }
-
-
-export default App
