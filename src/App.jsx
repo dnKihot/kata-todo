@@ -49,13 +49,19 @@ export default class App extends Component {
       this.setState({tasks: complited})
     }
   }
+  handleClearCompleted = () => {
+    const {tasks} = this.state
+    const complited =  tasks.filter(task => !task.isDone)
+    this.setState({tasks: complited})
+  }
+  
 
   render() {
     const {task, tasks, filter} = this.state
     let filteredTasks = tasks;
     if (filter === 'Active') filteredTasks = tasks.filter(task => !task.isDone);
     if (filter === 'Completed') filteredTasks = tasks.filter(task => task.isDone);
-    
+    const activeTasks = tasks.filter(task => !task.isDone).length;
     
     return (
       <section className="todoapp">
@@ -71,7 +77,7 @@ export default class App extends Component {
             handleTaskEdit={this.handleTaskEdit}
           />
             
-          <Footer handleFilterChange={this.handleFilterChange} filter={filter} />
+          <Footer handleFilterChange={this.handleFilterChange} activeTasks={activeTasks} filter={filter} handleClearCompleted={this.handleClearCompleted}/>
         </section>
       </section>
     )
