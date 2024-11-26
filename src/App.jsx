@@ -7,15 +7,25 @@ import NewTaskForm from './components/NewTaskForm'
 
 
 export default class App extends Component {
-  state = {task: '', tasks: [], filter: 'All'}
-   
+  state = {task: '', tasks: [], filter: 'All', currentTime: new Date()}
+  
+  componentDidMount() {
+    this.timerId = setInterval(() => {
+      this.setState({ currentTime: new Date() }); 
+    }, 30000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId); 
+  }
+
   handleChange = e => this.setState({ task: e.target.value });
   
   handleSubmit = () => {
     const { task } = this.state;
     if (task.trim().length) {
-      const newTask = { task, id: uniqueId(), isDone: false,  isEditing: false,};
-      this.setState((prevState) => ({tasks: [newTask, ...prevState.tasks], task: ''}));
+      const newTask = { task, id: uniqueId(), isDone: false,  isEditing: false, created: new Date()};
+      this.setState(prevState => ({tasks: [newTask, ...prevState.tasks], task: ''}));
     }
   };
   
@@ -41,14 +51,9 @@ export default class App extends Component {
     }));
   }
   
-  handleFilterChange = (e) => {
-    const {innerText} = e.target
-    this.setState({filter: innerText})
-    if(innerText == 'Complited') {
-      const complited =  this.state.tasks.filter(task => task.isDone)
-      this.setState({tasks: complited})
-    }
-  }
+  handleFilterChange = (e) => this.setState({filter: e.target.innerText})
+  
+  
   handleClearCompleted = () => {
     const {tasks} = this.state
     const complited =  tasks.filter(task => !task.isDone)
@@ -57,7 +62,7 @@ export default class App extends Component {
   
 
   render() {
-    const {task, tasks, filter} = this.state
+    const {task, tasks, filter, currentTime} = this.state
     let filteredTasks = tasks;
     if (filter === 'Active') filteredTasks = tasks.filter(task => !task.isDone);
     if (filter === 'Completed') filteredTasks = tasks.filter(task => task.isDone);
@@ -70,6 +75,7 @@ export default class App extends Component {
           
           <TaskList 
             tasks={filteredTasks} 
+            currentTime={currentTime}
             onRemove={this.handleRemove} 
             handleDone={this.handleDone} 
             handleToggleEdit={this.handleToggleEdit}
@@ -77,7 +83,11 @@ export default class App extends Component {
             handleTaskEdit={this.handleTaskEdit}
           />
             
-          <Footer handleFilterChange={this.handleFilterChange} activeTasks={activeTasks} filter={filter} handleClearCompleted={this.handleClearCompleted}/>
+          <Footer 
+            handleFilterChange={this.handleFilterChange} 
+            activeTasks={activeTasks} 
+            filter={filter} 
+            handleClearCompleted={this.handleClearCompleted}/>
         </section>
       </section>
     )

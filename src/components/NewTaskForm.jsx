@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 export default class NewTaskForm extends Component {
   render() {
@@ -17,3 +18,14 @@ export default class NewTaskForm extends Component {
     )
   }
 }
+
+
+NewTaskForm.propTypes = {
+  task: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
+};
+
+NewTaskForm.defaultProps = {
+  task: '',
+};
