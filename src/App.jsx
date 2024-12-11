@@ -6,17 +6,7 @@ import TaskList from './components/TaskList';
 import NewTaskForm from './components/NewTaskForm';
 
 export default class App extends Component {
-  state = { task: '', tasks: [], filter: 'All', currentTime: new Date() };
-
-  componentDidMount() {
-    this.timerId = setInterval(() => {
-      this.setState({ currentTime: new Date() });
-    }, 30000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerId);
-  }
+  state = { task: '', tasks: [], filter: 'All'};
 
   handleChange = (e) => this.setState({ task: e.target.value });
 
@@ -75,7 +65,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { task, tasks, filter, currentTime } = this.state;
+    const { task, tasks, filter } = this.state;
     let filteredTasks = tasks;
     if (filter === 'Active')
       filteredTasks = tasks.filter((task) => !task.isDone);
@@ -93,7 +83,6 @@ export default class App extends Component {
         <section className="main">
           <TaskList
             tasks={filteredTasks}
-            currentTime={currentTime}
             onRemove={this.handleRemove}
             handleDone={this.handleDone}
             handleToggleEdit={this.handleToggleEdit}

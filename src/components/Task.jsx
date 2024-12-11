@@ -3,6 +3,20 @@ import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 
 export default class Task extends Component {
+  state = {
+    currentTime: new Date(),
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.setState({ currentTime: new Date() });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   render() {
     const {
       task,
@@ -10,12 +24,17 @@ export default class Task extends Component {
       handleDone,
       handleToggleEdit,
       created,
-      currentTime,
     } = this.props;
+
+  
+    const { currentTime } = this.state;
+
+    // Вычисляем время от создания задачи до текущего времени
     const timeAgo = formatDistanceToNow(new Date(created), {
       addSuffix: true,
       baseDate: currentTime,
     });
+
     return (
       <div className="view">
         <input className="toggle" type="checkbox" onChange={handleDone} />
@@ -36,11 +55,8 @@ Task.propTypes = {
   handleDone: PropTypes.func.isRequired,
   handleToggleEdit: PropTypes.func.isRequired,
   created: PropTypes.instanceOf(Date).isRequired,
-  currentTime: PropTypes.instanceOf(Date).isRequired,
-  isEditing: PropTypes.bool,
 };
 
 Task.defaultProps = {
-  isEditing: false,
   currentTime: new Date(),
 };

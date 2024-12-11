@@ -15,24 +15,27 @@ export default class TaskList extends Component {
             key={id}
             className={cn({ completed: isDone, editing: isEditing })}
           >
-            <Task
-              task={task}
-              onRemove={() => onRemove(id)}
-              handleDone={() => handleDone(id)}
-              handleToggleEdit={() => handleToggleEdit(id)}
-              isEditing={isEditing}
-              created={created}
-            />
-            {isEditing && (
-              <input
-                type="text"
-                className="edit"
-                value={task}
-                key={id}
-                onChange={(e) => handleTaskEdit(id, e.target.value)}
-                onKeyDown={(e) => e.key == 'Enter' && handleToggleEdit(id)}
+            <form>
+              <Task
+                task={task}
+                onRemove={() => onRemove(id)}
+                handleDone={() => handleDone(id)}
+                handleToggleEdit={() => handleToggleEdit(id)}
+                isEditing={isEditing}
+                created={created}
               />
-            )}
+              {isEditing && (
+                <input
+                  type="text"
+                  className="edit"
+                  value={task}
+                  key={id}
+                  onChange={(e) => handleTaskEdit(id, e.target.value)}
+                  onKeyDown={(e) => e.key == 'Enter' && handleToggleEdit(id)}
+                />
+              )}  
+            </form>
+            
           </li>
         ))}
       </ul>
