@@ -32,7 +32,7 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
 
-      // Дополнительные настройки:
+  
       'react/react-in-jsx-scope': 'off',
       'no-unused-vars': ['warn', { varsIgnorePattern: '^React$' }],
       'no-undef': 'off',

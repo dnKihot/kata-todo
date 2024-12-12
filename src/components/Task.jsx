@@ -29,7 +29,7 @@ export default class Task extends Component {
   
     const { currentTime } = this.state;
 
-    // Вычисляем время от создания задачи до текущего времени
+    
     const timeAgo = formatDistanceToNow(new Date(created), {
       addSuffix: true,
       baseDate: currentTime,

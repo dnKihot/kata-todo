@@ -15,7 +15,7 @@ export default class TaskList extends Component {
             key={id}
             className={cn({ completed: isDone, editing: isEditing })}
           >
-            <form>
+            <form onSubmit={(e) => e.preventDefault()}>
               <Task
                 task={task}
                 onRemove={() => onRemove(id)}
@@ -35,7 +35,6 @@ export default class TaskList extends Component {
                 />
               )}  
             </form>
-            
           </li>
         ))}
       </ul>
